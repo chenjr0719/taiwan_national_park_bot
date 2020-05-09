@@ -1,0 +1,45 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@0.2.1
+
+jobs:
+  build:
+    executor: python/default
+    steps:
+      - checkout
+      - run:
+          command: pip install .[dev]
+          name: Install dev dependencies
+      - run:
+          command: python setup.py bdist_wheel
+          name: Build wheel
+  send_application:
+    executor: python/default
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run:
+          command: ./scripts/build.sh
+          name: Build TNP bot
+      - run:
+          command: ./scripts/run.sh
+          name: Run TNP bot
+
+workflows:
+  main:
+    jobs:
+      - build
+  # test:
+  #   jobs:
+  #     - send_application
+  # nightly:
+  #   triggers:
+  #     - schedule:
+  #         cron: "0 23 * * *"
+  #         filters:
+  #           branches:
+  #             only:
+  #               - master
+  #   jobs:
+  #     - send_application

@@ -20,7 +20,7 @@ install_requires = [
     "requests==2.23.0",
 ]
 
-dev_require = ["black==19.10b0", "pylint==2.5.0"]
+dev_require = ["black==19.10b0", "pylint==2.5.0", "wheel==0.34.2"]
 
 setup(
     name="tnpb",
